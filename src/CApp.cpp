@@ -68,7 +68,7 @@ void CApp::Render(){
 				b2Fixture* fite = bite->GetFixtureList();
 				//sf::Shape shape = sf::Shape::Rectangle(-STD_W*SCALE,-STD_H*SCALE,STD_W*SCALE,STD_H*SCALE,sf::Color::White,1.f,sf::Color::Black);
 				switch (fite->GetType()){
-					case b2Shape::e_polygon:
+					case b2Shape::e_polygon: {
 						b2PolygonShape* poly = static_cast<b2PolygonShape*>(fite->GetShape());
 						sf::Shape shape;
 						for (int32 i=0; i<poly->GetVertexCount(); i++){
@@ -82,7 +82,9 @@ void CApp::Render(){
 						Window.Draw(shape);
 				
 						break;
-					//default:
+        }
+					default:
+            break;
 				}
 			//}
 		}else{
