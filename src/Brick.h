@@ -6,6 +6,8 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 
+#include "Global.h"
+
 class Brick{
 
 	public:
@@ -14,22 +16,22 @@ class Brick{
 
 	private:
 	//attributes
-	unsigned char material;
-	float x,y;
-	float w,h;
-	float rotation;
-	float density;
-	float friction;
+	unsigned char Material;
+	float X,Y;
+	float W,H;
+	float Rotation;
+	float Density;
+	float Friction;
 	
 	b2Body* BodyInWorld;
 
-	sf::Color color;
+	sf::Color Color;
 
 	public:
 	//methods
 
 	//getters for SFML
-	sf::Shape GetXShape();
+	sf::Shape GetSfmlShape();
 
 	//getters for Box2D
 	b2Vec2 GetPosition();
