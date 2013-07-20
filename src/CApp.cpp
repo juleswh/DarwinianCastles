@@ -28,7 +28,7 @@ int CApp::Execute()
 bool CApp::Init(){
 	sf::WindowSettings settings;
 	settings.AntialiasingLevel = 8;
-	Window.Create(sf::VideoMode(800,600,32),"SFML Graphics",sf::Style::Resize|sf::Style::Close,settings);
+	Window.Create(sf::VideoMode(800,600,32),"SFML Graphics",sf::Style::Close,settings);
 	Window.SetFramerateLimit(60);
 	PhyMot.CreateGround(0.f,19.f);
 	return true;
