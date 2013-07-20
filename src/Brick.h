@@ -31,10 +31,14 @@ class Brick{
 	//methods
 
 	//getters for SFML
+	//returns the shape to be displayes in SFML
 	sf::Shape GetSfmlShape();
 
 	//getters for Box2D
+	//position according to Box2d
 	b2Vec2 GetPosition();
+
+	//adds the Brick to the simulation world indicated
 	void AddToWorld(b2World* world);
 };
 #endif //_BICK_H_
