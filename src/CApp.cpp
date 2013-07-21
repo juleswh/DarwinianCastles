@@ -9,14 +9,13 @@ bool CApp::Running=true;
 sf::Shape CApp::Poly;
 sf::RenderWindow CApp::Window;
 Physics CApp::PhyEng;
+std::list<b2Body*> CApp::physicsObjectList; //list of pointers to the physics bodies
 
 int CApp::Execute()
 {
 	CApp::Init();
-	int nite=0;
 	while (CApp::Running)
 	{
-		nite++;
     CApp::EventHandler();
     CApp::Process();
     CApp::Render();
@@ -30,7 +29,7 @@ bool CApp::Init(){
 	settings.AntialiasingLevel = 8;
 	CApp::Window.Create(sf::VideoMode(800,600,32),"SFML Graphics",sf::Style::Close,settings);
 	CApp::Window.SetFramerateLimit(60);
-	CApp::PhyEng.CreateGround(0.f,19.f);
+  CApp::CreateGround(0.f,19.f);
 	return true;
 }
 
@@ -43,12 +42,18 @@ void CApp::EventHandler(){
 				CApp::Running=false;
 				break;
 			case sf::Event::MouseButtonReleased:
+        if (Event.MouseButton.Button == sf::Mouse::Left) {
 				random_w = (rand() % 1000) / 1000.0;
 				random_h = (rand() % 1000 )/ 1000.0;
-				CApp::PhyEng.CreateBox(random_w,random_h,Event.MouseButton.X/SCALE,Event.MouseButton.Y/SCALE);
-				//shape = sf::Shape::Rectangle(-30,-30,30,30,sf::Color::Black,0,sf::Color::Black);
-				//shape.SetPosition(Event.MouseButton.X,Event.MouseButton.Y);
-				//shape.EnableOutline(true);
+				CApp::CreateBox(random_w,random_h,Event.MouseButton.X/SCALE,Event.MouseButton.Y/SCALE);
+        } else if (Event.MouseButton.Button == sf::Mouse::Right) {
+          if (!CApp::physicsObjectList.empty()) {
+            /* remove object from world */
+            CApp::PhyEng.World->DestroyBody(CApp::physicsObjectList.back());
+            /* also remove pointer in list */
+            CApp::physicsObjectList.pop_back();
+          }
+        }
 				break;
       case sf::Event::KeyPressed:
         if (Event.Key.Code == sf::Key::Escape) {
@@ -101,6 +106,37 @@ void CApp::Render(){
 	}
 
 	CApp::Window.Display();
+}
+
+void CApp::CreateGround(float x,float y){
+	b2BodyDef BodyDef;
+	BodyDef.position = b2Vec2(x,y);
+	BodyDef.type=b2_staticBody;
+	b2Body* Body = CApp::PhyEng.World->CreateBody(&BodyDef);
+
+	b2PolygonShape Shape;
+	Shape.SetAsBox((800.f)/30,(16.f/2)/30);
+	b2FixtureDef FixtureDef;
+	FixtureDef.density = 0.f;
+	FixtureDef.shape = &Shape;
+	Body->CreateFixture(&FixtureDef);
+}
+
+void CApp::CreateBox(float w,float h,float x,float y){
+	b2BodyDef bodyDef;
+	bodyDef.position = b2Vec2(x,y);
+	bodyDef.type=b2_dynamicBody;
+	b2Body* body = CApp::PhyEng.World->CreateBody(&bodyDef);
+
+	b2PolygonShape shape;
+	shape.SetAsBox(w,h);
+	b2FixtureDef fxtDef;
+	fxtDef.density=2.f;
+	fxtDef.friction=0.7f;
+	fxtDef.shape=&shape;
+	body->CreateFixture(&fxtDef);
+     
+  CApp::physicsObjectList.push_front(body);
 }
 
 int main(){

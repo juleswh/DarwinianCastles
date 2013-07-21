@@ -13,9 +13,5 @@ class Physics
 
 	bool Init();
 	void Process(float step);
-	public:
-
-	void CreateBox(float w, float h, float x, float y);	
-	void CreateGround(float X, float Y);
 
 };
