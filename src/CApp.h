@@ -18,7 +18,6 @@ class CApp{
 		
 
 		static sf::RenderWindow Window;
-		static sf::Shape Poly;
 		static Physics PhyEng;//moteur physique
 
     static std::list<b2Body*> physicsObjectList; //list of pointers to the physics bodies
