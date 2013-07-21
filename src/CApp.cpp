@@ -6,7 +6,6 @@
 using namespace std;
 
 bool CApp::Running=true;
-sf::Shape CApp::Poly;
 sf::RenderWindow CApp::Window;
 Physics CApp::PhyEng;
 std::list<b2Body*> CApp::physicsObjectList; //list of pointers to the physics bodies
