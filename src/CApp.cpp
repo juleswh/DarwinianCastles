@@ -66,32 +66,33 @@ void CApp::Process(){
 }
 
 void CApp::Render(){
+  b2Fixture * fite = NULL;
+  sf::Shape * shape = NULL;
+  b2PolygonShape * poly = NULL;
+
 	Window.Clear(sf::Color::White);
-	for (b2Body* bite = PhyMot.World->GetBodyList(); bite!=0;bite = bite->GetNext()){
-		if(bite->GetType()==b2_dynamicBody){
-			//for (b2Fixture* fite = bite->GetFixtureList(); fite!=0; fite->GetNext()){
-				b2Fixture* fite = bite->GetFixtureList();
-				//sf::Shape shape = sf::Shape::Rectangle(-STD_W*SCALE,-STD_H*SCALE,STD_W*SCALE,STD_H*SCALE,sf::Color::White,1.f,sf::Color::Black);
+	for (b2Body* bite = PhyMot.World->GetBodyList(); bite != NULL; bite = bite->GetNext()){
+		if(bite->GetType() == b2_dynamicBody){
+				fite = bite->GetFixtureList();
 				switch (fite->GetType()){
-					case b2Shape::e_polygon: {
-						b2PolygonShape* poly = static_cast<b2PolygonShape*>(fite->GetShape());
-						sf::Shape shape;
+					case b2Shape::e_polygon :
+						poly = static_cast<b2PolygonShape*>(fite->GetShape());
+            shape = new sf::Shape;
 						for (int32 i=0; i<poly->GetVertexCount(); i++){
-							shape.AddPoint(poly->GetVertex(i).x * SCALE , poly->GetVertex(i).y* SCALE ,sf::Color(0, 0, 0),     sf::Color(128, 128, 128) );
+							shape->AddPoint(poly->GetVertex(i).x * SCALE , poly->GetVertex(i).y* SCALE ,sf::Color(0, 0, 0),     sf::Color(128, 128, 128) );
 						}
-						shape.SetPosition(bite->GetPosition().x * SCALE, bite->GetPosition().y * SCALE);
-						shape.SetRotation(-180/b2_pi * bite->GetAngle());
-						shape.EnableOutline(true);
-						shape.EnableFill(false);
-						shape.SetOutlineWidth(1);
-						Window.Draw(shape);
-				
+						shape->SetPosition(bite->GetPosition().x * SCALE, bite->GetPosition().y * SCALE);
+						shape->SetRotation(-180/b2_pi * bite->GetAngle());
+						shape->EnableOutline(true);
+						shape->EnableFill(false);
+						shape->SetOutlineWidth(1);
+						Window.Draw(*shape);
+            delete shape;
 						break;
-        }
+
 					default:
             break;
 				}
-			//}
 		}else{
 			sf::Shape shape = sf::Shape::Rectangle(0,0,200,10,sf::Color::Black,0.0f,sf::Color::Black);
 			shape.SetPosition(bite->GetPosition().x *SCALE, bite->GetPosition().y * SCALE);
