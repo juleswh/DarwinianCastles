@@ -17,7 +17,7 @@ class CApp{
 
 		static sf::RenderWindow Window;
 		static sf::Shape Poly;
-		static Physics PhyMot;//moteur physique
+		static Physics PhyEng;//moteur physique
 
 	public:
 		static int Execute();
