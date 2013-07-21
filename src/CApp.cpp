@@ -50,6 +50,11 @@ void CApp::EventHandler(){
 				//shape.SetPosition(Event.MouseButton.X,Event.MouseButton.Y);
 				//shape.EnableOutline(true);
 				break;
+      case sf::Event::KeyPressed:
+        if (Event.Key.Code == sf::Key::Escape) {
+          Running = false;
+        }
+        break;
 			default:
 				break;
 		}
