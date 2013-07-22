@@ -5,7 +5,7 @@ Physics::Physics()
 
 	//init the world
 	this->Gravity = new b2Vec2(0.f, 9.8f);
-	this->World = new b2World(*this->Gravity,true);
+	this->World = new b2World(*this->Gravity);
 }
 
 void Physics::Process(float step){
