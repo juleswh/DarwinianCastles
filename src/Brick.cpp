@@ -11,6 +11,8 @@ Brick::Brick(float w,float h,float x,float y,float rotation, float density,float
 	this->Friction=friction;
 	
 	this->BodyInWorld = NULL;
+	this->SfmlShape = new sf::Shape;
+	*this->SfmlShape =  sf::Shape::Rectangle(-w/2,-h/2,w/2,h/2,this->Color, this->OutlineWidth, this->OutlineColor);
 }
 
 sf::Shape Brick::GetSfmlShape()
