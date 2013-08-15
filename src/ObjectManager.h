@@ -7,7 +7,6 @@
 
 #include "Global.h"
 
-#include "Physics.h"
 #include "Object.h"
 
 using std::vector;
@@ -16,34 +15,38 @@ using std::vector;
 class ObjectManager {
 
 	public:
+		enum ObjectType {BRICK=1, BULLET, HEART};
 		
-		//types of object we manage
-		enum ObjectType {Brick=1, Bullet, Heart};
-
 		//Constructor
-		ObjectManger(sf::RenderWindow* window, Physics* physicsEngine);
+		ObjectManager(sf::RenderWindow* window, b2World* world);
 		//destructor
 		virtual ~ObjectManager();
 
 	private:
-		sf::RenderingWindow* Window;
+		sf::RenderWindow* Window;
 		b2World* World;
 		
-		boost::ptr_vector<Object> ObjectList;
+		std::vector<Object*> ObjectList;
 
 	public:
-		//process a Box2d step, and render the result into sfml window
-		//do clear window
+		//process a Box2d step
 		void ProcessStep(void);
 	
+		/**
+			* Render objects in the window
+			* do not clear window
+			* do not do display()
+			**/
+		void Render();
+
 		/** defines an Object from given points
 		 	* one point -> circle which radius is of the given b2vec2 length
 			* two points -> edge
 			* three+ points -> polygon
 		 **/
-		bool CreateObject(const std::vector<b2Vec2>& points, unsigned int numberOfPoints, ObjectType type=Brick );
-		bool CreateRectangle(float w, float h,float x,float y, ObjectType type=Brick);
-		
+		bool CreateObject(const std::vector<b2Vec2>& points, float x, float y, ObjectManager::ObjectType type=BRICK);
+		bool CreateRectangle(float w, float h,float x,float y, ObjectType type=BRICK);
+		bool AddObject(Object* obj);
 		//resets the world : destroys all objects
 		void Reset();
 		

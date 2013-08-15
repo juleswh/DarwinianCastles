@@ -6,10 +6,12 @@
 #include <SFML/Graphics.hpp>
 #include <iostream>
 #include <list>
+#include <time.h>
 
 #include "Global.h"
-#include "Physics.h"
 #include "Object.h"
+#include "ObjectManager.h"
+#include "RandomGen.h"
 
 
 class Test{
@@ -17,9 +19,11 @@ class Test{
 		static bool Running;
 
 		static sf::RenderWindow Window;
-		static Physics PhyEng;//moteur physique
 
-    static std::vector<Object*> ObjectList; //list of pointers to the physics bodies
+		static b2Vec2* Gravity;
+		static b2World* World;
+		static b2Body* Ground;
+		static ObjectManager* ObjMgr;
 
 	public:
 		static int Execute();

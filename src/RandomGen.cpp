@@ -1,25 +1,46 @@
 #include "RandomGen.h"
 
-RandomGen::MAX_VERTICES=4;
-RandomGen::MAX_DIST1000=1000; //distance of vertex from middle
-RandomGen::MAX_X1000=800;
-RandomGen::MAX_Y1000=600;
-RandomGen::MAX_DENSITY;
-RandomGen::MAX_FRICTION;
+size_t RandomGen::MIN_VERTICES=3;
+size_t RandomGen::MAX_VERTICES=8;
+float RandomGen::MIN_DIST=0.6; //distance of vertex from middle
+float RandomGen::MAX_DIST=1.8; //distance of vertex from middle
+float RandomGen::MAX_X=800/SCALE;
+float RandomGen::MAX_Y=400/SCALE;
+float RandomGen::MAX_DENSITY=2;
+float RandomGen::MAX_FRICTION=2;
 
 
-Brick RandomGen::Generate(void){
+/** a - b < 0 => a < b => b is CW side of a
+	* a - b > 0 => a > b => b is CCW side of a
+	* 
+	**/
+float RandomGen::sortVerticesClockWise(b2Vec2 a, b2Vec2 b){
+	return (a.x * b.y - a.y * b.x);
+}
+
+float RandomGen::generateCoord(){
+	float r=(float)rand() / ((float)RAND_MAX/(MAX_DIST-MIN_DIST))+MIN_DIST;
+	return r;
+}
+
+Object* RandomGen::RandGenerate(void){
 	
-	float w = ( rand() % (MAX_DIST1000) ) / 1000.0f;
-	float h = ( rand() % (MAX_DIST1000) ) / 1000.0f;
+	std::vector<b2Vec2> vertices;
+	size_t n = rand() % (MAX_VERTICES - MIN_VERTICES) + MIN_VERTICES;
+	for (size_t i = 0 ; i < n ; i++ ){
+		float angle = 2*3.1415/n*i;
+		float x = RandomGen::generateCoord()*cos(angle);
+		float y = RandomGen::generateCoord()*sin(angle);
+		vertices.push_back(b2Vec2(x,y));
+	}
 
-	float x = ( rand() % (MAX_X1000) ) / 1000.0f;
-	float y = ( rand() % (MAX_Y1000) ) / 1000.0f;
+	float x = (float)rand() / ((float)RAND_MAX/MAX_X);
+	float y = (float)rand() / ((float)RAND_MAX/MAX_Y);
+	float rot = (float)rand();
+	rot=0;
 
-	float rot = ((rand() % 1000)/500.0 - 1 ) * b2_pi; //[-pi , pi]
-	
-	float density = ((rand() % 1000)/1000.0) * MAX_DENSITY;
-	float friction = ((rand() % 1000)/1000.0) * MAX_FRICTION;
-
-	return Brick(w,h,x,y,rot,density,friction);
+	float density = (float)rand() / ((float)RAND_MAX/MAX_DENSITY);
+	float friction = (float)rand() / ((float)RAND_MAX/MAX_FRICTION);
+		
+	return new Object(vertices,x,y,rot,friction,density);
 }

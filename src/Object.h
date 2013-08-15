@@ -12,8 +12,13 @@
 
 class Object{
 	public:
-		Object(const std::vector<b2Vec2>& vertices,float x, float y);
+
+		enum ObjectType {BRICK=1, BULLET, HEART};
+
+		Object(const std::vector<b2Vec2>& vertices,float x, float y, float rotation=0.f, float friction=0.3f,float density=1.0f);
 		virtual ~Object();
+
+		void Refresh();
 
 	public:
 		void SetBody(b2Body* body);
@@ -26,12 +31,15 @@ class Object{
 		
 		void SetFixtureDef(b2FixtureDef* fixtDef);
 
+		sf::Shape* GetSfmlShape();
+
 	private:
 		b2BodyDef* _BodyDef;
 		b2Body* _Body;
 		b2FixtureDef* _FixtureDef;
 		b2Fixture* _Fixture;
 		b2PolygonShape* _PolygonShape;
+		sf::Shape* _SfmlShape;
 	
 };
 	

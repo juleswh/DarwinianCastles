@@ -1,23 +1,27 @@
 #ifndef _RANDOM_GEN_H_
 #define _RANDOM_GEN_H
 
-#include "Brick.h"
+#include "Object.h"
 
 class RandomGen
 {
 
 	public:
 
-		static Brick RandGenerate();
+		static float sortVerticesClockWise(b2Vec2,b2Vec2);
+		static Object* RandGenerate();
+		static float generateCoord();
 
 	private:
 		
-		static MAX_VERTICES;
-		static MAX_DIST1000; //distance of vertex from middle
-		static MAX_X1000;
-		static MAX_Y1000;
-		static MAX_DENSITY;
-		static MAX_FRICTION;
+		static size_t MIN_VERTICES;
+		static size_t MAX_VERTICES;
+		static float MIN_DIST; //distance of vertex from middle
+		static float MAX_DIST; //distance of vertex from middle
+		static float MAX_X;
+		static float MAX_Y;
+		static float MAX_DENSITY;
+		static float MAX_FRICTION;
 
 };
 

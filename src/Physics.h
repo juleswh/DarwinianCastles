@@ -1,3 +1,5 @@
+#ifndef _PHYSICS_H_
+#define _PHYSICS_H_
 #include <iostream>
 #include <Box2D/Box2D.h>
 
@@ -15,3 +17,4 @@ class Physics
 	void Process(float step);
 
 };
+#endif
