@@ -7,6 +7,9 @@
 #include <string>
 #include <cstdio>
 
+int test_gladiators(int argc, char ** argv);
+
+
 using std::cout;
 using std::endl;
 
@@ -26,13 +29,15 @@ int test_species(int argc, char ** argv){
     std::default_random_engine generator_alteration(time(NULL));
     std::default_random_engine generator_proba(time(NULL));
 
-    Species hippocampe(std::string("hippocampe"),20,&generator_alteration,&generator_proba,3,0,0.05,3);
+    Species hippocampe(std::string("hippocampe"),20,&generator_alteration,&generator_proba,2,0,0.05,3);
+    hippocampe.setLifeEsperance(11);
+    hippocampe.setLifeEsperanceStdDev(2);
     std::string str1("mmmmmmmmmmmmmmmmmmmm");
     std::string str2("AAAAAAAAAAAAAAAAAAAA");
     std::vector<Gene> genes1;
     std::vector<Gene> genes2;
 
-    for(int i=0;i<str1.size();i++){
+    for(unsigned int i=0;i<str1.size();i++){
         genes1.push_back((gene_t)str1[i]);
         genes2.push_back((gene_t)str2[i]);
     }
@@ -42,20 +47,23 @@ int test_species(int argc, char ** argv){
     hippocampe.addSpecimen(sp1);
     hippocampe.addSpecimen(sp2);
 
+    cout << "start love season"<<endl;
+
     int generations=15;
     for(int i=0; i<generations;i++){
         hippocampe.loveSeason();
-    }
-    cout << "specimens[] size = " << hippocampe.getSpecimens().size() << endl;
-    for(int i=0;i<hippocampe.getSpecimens().size();i++){
-        Specimen *sp=hippocampe.getSpecimens().at(i);
-        cout << i << " : ";
-        for(int j=0;j<hippocampe.getGenomSize();j++){
-            cout << (char)(sp->getGenom()->getGenes()[j].getValue());
+        hippocampe.checkAlive();
+        cout<<endl<<"---------------"<<endl<<"generation "<<i<<endl;
+        cout << "specimens[] size = " << hippocampe.getSpecimens().size() << endl;
+        for(unsigned int i=0;i<hippocampe.getSpecimens().size();i++){
+            Specimen *sp=hippocampe.getSpecimens().at(i);
+            cout << i << " : ";
+            for(unsigned int j=0;j<hippocampe.getGenomSize();j++){
+                cout << (char)(sp->getGenom()->getGenes()[j].getValue());
+            }
+            cout << " - age : " << sp->getAge() << endl;
         }
-        cout << " - age : " << sp->getAge() << endl;
     }
-    cout << hippocampe.getName();
 
     return 0;
 }
@@ -72,7 +80,7 @@ int test_genom(int argc, char ** argv){
 
     srand (time(NULL));
 
-    for(int i=0;i<str1.size();i++){
+    for(unsigned int i=0;i<str1.size();i++){
         genes1.push_back((gene_t)str1[i]);
         genes2.push_back((gene_t)str2[i]);
     }
@@ -81,15 +89,15 @@ int test_genom(int argc, char ** argv){
     Genom pere(genes1);
     Genom mere(genes2);
 
-    pere.alterate(0.2,5,generator_proba,generator_alteration);
-    mere.alterate(0.2,5,generator_proba,generator_alteration);
+    pere.alterate(0.2,5,&generator_proba,&generator_alteration);
+    mere.alterate(0.2,5,&generator_proba,&generator_alteration);
     cout << "pere alt = ";
-    for(int i=0;i<str1.size();i++){
+    for(unsigned int i=0;i<str1.size();i++){
         cout << (char)(pere.getGenes()[i].getValue());
     }
     cout <<endl;
     cout << "mere alt = ";
-    for(int i=0;i<str1.size();i++){
+    for(unsigned int i=0;i<str1.size();i++){
         cout << (char)(mere.getGenes()[i].getValue());
     }
     cout <<endl;
@@ -100,7 +108,7 @@ int test_genom(int argc, char ** argv){
         exit(EXIT_FAILURE);
     }
 
-    for(int i=0;i<str1.size();i++){
+    for(unsigned int i=0;i<str1.size();i++){
         cout << (char)(fils->getGenes()[i].getValue());
     }
     cout <<endl;
@@ -110,5 +118,6 @@ int test_genom(int argc, char ** argv){
 }
 
 int main(int argc, char ** argv){
-    return test_species(argc,argv);
+    cout<< "run test"<<endl;
+    return test_gladiators(argc,argv);
 }

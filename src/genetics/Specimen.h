@@ -32,15 +32,17 @@ class Specimen{
         void growOld(unsigned int time=1);
 
         unsigned int getLifeEsperance(void);
-        unsigned int getLifeEsperanceStdDev(void);
+        double getLifeEsperanceStdDev(void);
 
         void setHealthLevel(int health_lvl);
-        int getHealthLevel(void);
+        unsigned int getHealthLevel(void);
 
         bool isAlive(void);
 
         bool isSexuallyOpen() const;
         void setSexuallyOpen(bool open);
+
+        virtual char *toString(void);
 
     protected:
         /** set the genom.
@@ -53,6 +55,7 @@ class Specimen{
         **/
         void setSpecies(Species *species);
 
+
 	private:
         Genom *genom;
         Species *species;
@@ -60,9 +63,5 @@ class Specimen{
         int health_lvl;
         bool is_dead;
         bool sexually_open;
-        std::default_random_engine *generator_proba;
-        std::default_random_engine *generator_alteration;
-
-
 };
 #endif // SPECIMEN_H

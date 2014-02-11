@@ -3,6 +3,7 @@
 
 #include <string>
 #include <vector>
+#include <algorithm>
 
 #include "Specimen.h"
 class Specimen;
@@ -28,12 +29,16 @@ class Species
         std::default_random_engine *getGeneratorProba();
         std::default_random_engine *getGeneratorAlteration();
 
-        unsigned int getLifeEsperance(void);
-        unsigned int getLifeEsperanceStdDev(void);
+        unsigned int getLifeEsperance(void) const ;
+        double getLifeEsperanceStdDev(void) const ;
+        void setLifeEsperanceStdDev(double std_dev);
+        void setLifeEsperance(unsigned int esperance);
 
         //specimen list acccessor/modifier
         unsigned int addSpecimen(Specimen *new_specimen);
         std::vector<Specimen*> const & getSpecimens(void) const;
+
+        unsigned int checkAlive(void);
 
         //reproduction
         unsigned int getSexualMajorityAge(void) const;
@@ -55,11 +60,12 @@ class Species
         **/
         unsigned int reproduction(unsigned int index1,unsigned int index2);
 
-
     protected:
-    private:
-        std::string name;
         std::vector<Specimen*> specimens;
+
+    private:
+
+        std::string name;
         unsigned int genom_size;
         unsigned int sexual_majority;
         unsigned int minSexHealthLevel;

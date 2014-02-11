@@ -28,7 +28,7 @@ int Genom::setGenes(const std::vector<Gene> &genes){
     }
 }
 
-int Genom::getSize() const{
+unsigned int Genom::getSize() const{
     return this->size;
 }
 
@@ -37,7 +37,7 @@ Genom* Genom::mix(const Genom *other) const{
     if(this->getSize()==other->getSize()){
         child=new Genom(this->genes);
         //for each gene, take randomly from A or B and put in C (the generated child)
-        for (int i=0;i<this->getSize();i++){
+        for (unsigned int i=0;i<this->getSize();i++){
             if((rand()%2)>=1){
                 child->genes[i]=other->genes[i];
             }
@@ -49,15 +49,15 @@ Genom* Genom::mix(const Genom *other) const{
 }
 
 //void Genom::alterate(double probability, double std_dev)
-void Genom::alterate(double probability, double std_dev,std::default_random_engine &generator_proba,std::default_random_engine &generator_alteration)
+void Genom::alterate(double probability, double std_dev,std::default_random_engine *generator_proba,std::default_random_engine *generator_alteration)
 {
     std::normal_distribution<double> alteration(0,std_dev);
     std::uniform_real_distribution<double> proba(0.0,1.0);
 
-    for (int i=0;i<this->getSize();i++){
-        if(proba(generator_proba)<probability){
+    for (unsigned int i=0;i<this->getSize();i++){
+        if(proba(*generator_proba)<probability){
             //this gene is selected to be modified
-            this->genes[i].setValue(genes[i].getValue()+alteration(generator_alteration));
+            this->genes[i].setValue(genes[i].getValue()+alteration(*generator_alteration));
         }
     }
 

@@ -18,7 +18,7 @@ class Genom{
 		int setGenes(const std::vector<Gene> &genes);
 
 		/** returns the size of the genom*/
-		int getSize() const;
+		unsigned int getSize() const;
 
 		std::vector<Gene> const & getGenes(void) const;
 
@@ -29,7 +29,7 @@ class Genom{
 		 * to be modified. If the gene is modified, a random number is generated thanks to
 		 * a Normal Distribution of mean 0 and standard deviation given by the 2nd parameter
 		**/
-		void alterate(double probability, double std_dev,std::default_random_engine &generator_proba,std::default_random_engine &generator_alteration);
+		void alterate(double probability, double std_dev,std::default_random_engine *generator_proba,std::default_random_engine *generator_alteration);
 		//void alterate(double probability, double std_dev);
 
 

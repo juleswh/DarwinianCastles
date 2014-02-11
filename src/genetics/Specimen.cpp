@@ -32,7 +32,7 @@ const Genom * Specimen::getGenom(void) const
 
 void Specimen::alterateGenom(double probability, double std_dev)
 {
-    this->genom->alterate(probability,std_dev,*this->generator_proba,*this->generator_alteration);
+    this->genom->alterate(probability,std_dev,this->getGeneratorProba(),this->getGeneratorAlteration());
 }
 
 std::default_random_engine * Specimen::getGeneratorProba()
@@ -54,9 +54,10 @@ Species * Specimen::getSpecies(void) const
 void Specimen::setHealthLevel(int health_lvl)
 {
     this->health_lvl=health_lvl;
+    if(health_lvl<=0) this->is_dead=true;
 }
 
-int Specimen::getHealthLevel(void)
+unsigned int Specimen::getHealthLevel(void)
 {
     return this->health_lvl;
 }
@@ -84,7 +85,8 @@ void Specimen::setAge(unsigned int age)
     else this->setSexuallyOpen(false);
 
     std::normal_distribution<double> life_distribution(this->getLifeEsperance(),this->getLifeEsperanceStdDev());
-    if(0<life_distribution(*this->getGeneratorProba())<=this->getAge()){
+    double val=life_distribution(*this->getGeneratorProba());
+    if((0<val) && (val<=this->getAge())){
         //die!
         this->is_dead=true;
     }
@@ -100,7 +102,7 @@ unsigned int Specimen::getLifeEsperance(void)
     return this->species->getLifeEsperance();
 }
 
-unsigned int Specimen::getLifeEsperanceStdDev(void)
+double Specimen::getLifeEsperanceStdDev(void)
 {
     return this->species->getLifeEsperanceStdDev();
 }
@@ -119,3 +121,9 @@ void Specimen::setSpecies(Species * species)
 {
     this->species=species;
 }
+char *Specimen::toString(void)
+{
+    return const_cast<char*>("specimen");
+}
+
+
