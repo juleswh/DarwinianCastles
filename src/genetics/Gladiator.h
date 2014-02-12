@@ -11,7 +11,7 @@ class Gladiator : public Specimen
         Gladiator(Genom* genom, Species * species,const char* name="");
         Gladiator(Genom* genom, Species * species,std::string &name);
 
-        void initialize(std::vector<Gene> const &a);
+        void initialize(std::vector<Gene> genes);
         virtual ~Gladiator();
 
         Gladiator* fight(Gladiator *other);
@@ -31,7 +31,16 @@ class Gladiator : public Specimen
         unsigned int getCharism() { return charism; }
         void setCharism(unsigned int val) { charism = val; }
         unsigned int getObstination() { return obstination; }
-        void setObstination(unsigned int val) { obstination = val; }
+        void setObstination(unsigned int val){ obstination=val; }
+
+        void resetDefense(void);
+        void resetAttack(void);
+        void resetCharism(void);
+        void resetObstination(void);
+        void resetHealthLevel(void);
+        void resetLifeEsperance(void);
+
+        void reset(void);
 
         void setName(std::string &name){this->name.assign(name);};
         void setName(const char* name){this->name.assign(name);};

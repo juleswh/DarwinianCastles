@@ -12,33 +12,75 @@ Gladiator::Gladiator(Genom* genom, Species * species, std::string &name) : Speci
     this->setName(name);
 }
 
-void Gladiator::initialize(std::vector<Gene> const &genes)
+void Gladiator::initialize(std::vector<Gene> genes)
 {
-    std::vector<gene_t> a;
-    for (std::vector<Gene>::const_iterator it=genes.begin();it!=genes.end();++it){
-        a.push_back((it->getValue()>=100 ? 100 : it->getValue())); //saturates values at 100
+    //std::vector<gene_t> a;
+    for (std::vector<Gene>::iterator it=genes.begin();it!=genes.end();++it){
+        it->setValue((it->getValue()>=100 ? 100 : it->getValue())); //saturates values at 100
     }
-    int def=    -0.2*a[0]   +0.1*a[1]   +0.3*a[2]   +0.3*a[4]   +0.3*a[6];
-    int att=    0.2*a[0]   -0.2*a[1]   +0.4*a[2]   +0.2*a[5]   +0.3*a[6];
-    int health= (0.5*a[3]   +0.5*a[7]   -0.2*a[4])/2;
-    int charism=0.2*a[0]   +0.5*a[2]   +0.3*a[3]   -0.3*a[4];
-    int obstination=1.0*a[7]   -0.2*a[5];
-    int lifeEsperance=0.5*a[3] +0.2*a[5]   +0.3*a[7]   -0.3*a[4];
+    this->reset();
 
+}
+
+void Gladiator::reset(){
+    resetDefense();
+    resetAttack();
+    resetCharism();
+    resetHealthLevel();
+    resetLifeEsperance();
+    resetObstination();
+}
+
+void Gladiator::resetDefense(void)
+{
+    std::vector<Gene> const &a = this->getGenom()->getGenes();
+    int def=    -0.2*a[0].getValue()   +0.1*a[1].getValue()   +0.3*a[2].getValue()   +0.3*a[4].getValue()   +0.3*a[6].getValue();
     def=(def<0 ? 0 : def);
-    att=(att<0 ? 0 : att);
-    health=(health<0 ? 50 : health+50);
-    charism=(charism<0 ? 0 : charism);
-    obstination=(obstination<0 ? 0 : obstination);
-    lifeEsperance=(lifeEsperance<0 ? 0 : lifeEsperance);
-
     this->setDefense(def);
+}
+
+void Gladiator::resetAttack(void)
+{
+    std::vector<Gene> const &a = this->getGenom()->getGenes();
+    int att=    0.2*a[0].getValue()   -0.2*a[1].getValue()   +0.4*a[2].getValue()   +0.2*a[5].getValue()   +0.3*a[6].getValue();
+    att=(att<0 ? 0 : att);
     this->setAttack(att);
-    this->setHealthLevel(health);
+
+}
+
+void Gladiator::resetCharism(void)
+{
+    std::vector<Gene> const &a = this->getGenom()->getGenes();
+    int charism=0.2*a[0].getValue()   +0.5*a[2].getValue()   +0.3*a[3].getValue()   -0.3*a[4].getValue();
+    charism=(charism<0 ? 0 : charism);
     this->setCharism(charism);
+}
+
+void Gladiator::resetObstination(void)
+{
+    std::vector<Gene> const &a = this->getGenom()->getGenes();
+    int obstination=1.0*a[7].getValue()   -0.2*a[5].getValue();
+    obstination=(obstination<0 ? 0 : obstination);
     this->setObstination(obstination);
+
+}
+
+void Gladiator::resetHealthLevel(void)
+{
+    std::vector<Gene> const &a = this->getGenom()->getGenes();
+    int health= (0.5*a[3].getValue()   +0.5*a[7].getValue()   -0.2*a[4].getValue())*2;
+    health=(health<0 ? 50 : health+50);
+    this->setHealthLevel(health);
+}
+
+void Gladiator::resetLifeEsperance(void)
+{
+    std::vector<Gene> const &a = this->getGenom()->getGenes();
+    int lifeEsperance=0.5*a[3].getValue() +0.2*a[5].getValue()   +0.3*a[7].getValue()   -0.3*a[4].getValue();
+    lifeEsperance=(lifeEsperance<0 ? 0 : lifeEsperance);
     this->setLifeEsperance(lifeEsperance);
 }
+
 
 bool Gladiator::continueFighting(void)
 {
@@ -60,10 +102,10 @@ Gladiator* Gladiator::fight(Gladiator* other)
     Gladiator* winner;
     if(this==other){
         //no fight vs itself
-        winner =nullptr;
+        winner = nullptr;
     }else if(this->attacks(other,true)==0 && other->attacks(this,true)== 0 ){
         //no winner
-        winner=nullptr;
+        winner = nullptr;
     }else{
     //fight
         while(this->continueFighting() && other->continueFighting())

@@ -4,13 +4,18 @@
 #include <iostream>
 #include <string>
 #include <cstdio>
+#include "Championship.h"
+#include "testGladiators.h"
 
 using std::cout;
 using std::endl;
 
-const char* names[]={"Jean","Jacques","Edouard","Francis","Etienne","Paul","Titouan","Eric","Henry","Victor","Georges","Quentin","Neuville"};
+const char* TestGladiators::names[]={"Jean","Jacques","Edouard","Francis","Etienne","Paul","Titouan","Eric","Henry","Victor","Georges","Quentin","Neuville"};
 
-int test_gladiators(int argc, char ** argv){
+TestGladiators::TestGladiators(void){}
+TestGladiators::~TestGladiators(void){}
+
+int TestGladiators::test_gladiators(int argc, char ** argv){
     std::default_random_engine generator_alteration(time(NULL));
     std::default_random_engine generator_proba(time(NULL));
 
@@ -35,11 +40,18 @@ int test_gladiators(int argc, char ** argv){
         }
     }
     cout<<"total added"<<gladiators.getSpecimens().size()<<endl;
-    gladiators.tournament();
+    /*gladiators.tournament();
     cout<<"\n\nend of tournament!"<<endl;
     for(std::vector<Gladiator*>::const_iterator it=gladiators.getSpecimens().begin();it!=gladiators.getSpecimens().end();++it){
         cout<< **it <<endl;
     }
+    */
+
+    Championship championat(gladiators.getSpecimens(),this);
+    cout << "start championship" << endl;
+    championat.start();
+    cout << "fin du championnat, gagnant = ";
+    cout<< *championat.getWinner() << endl;
 
     int generations=0;
     for(int i=0; i<generations;i++){
@@ -51,4 +63,8 @@ int test_gladiators(int argc, char ** argv){
     }
 
     return 0;
+}
+
+void TestGladiators::onDuelEnd(ChampionshipDuelEvent &e){
+    cout << "###End duel #"<<e.duel->getID()<<" -- winner is "<<e.duel->getWinner()->getName()<<endl;
 }

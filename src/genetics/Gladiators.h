@@ -18,7 +18,7 @@ class Gladiators : public Species
 
         //specimen list acccessor/modifier
         unsigned int addSpecimen(Gladiator *new_specimen);
-        std::vector<Gladiator*> const & getSpecimens(void) const;
+        std::vector<Gladiator*> & getSpecimens(void);
 
         void tournament(void);
         unsigned int loveSeason(void);

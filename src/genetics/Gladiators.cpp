@@ -10,6 +10,9 @@ Gladiators::Gladiators(const std::string &name,unsigned int genom_size,
 
 Gladiators::~Gladiators()
 {
+    for (unsigned int i=0;i<this->specimens.size();i++){
+        delete this->specimens[i];
+    }
 }
 
 unsigned int Gladiators::addSpecimen(Gladiator *new_specimen)
@@ -22,7 +25,7 @@ unsigned int Gladiators::addSpecimen(Gladiator *new_specimen)
     }
 }
 
-std::vector<Gladiator*> const & Gladiators::getSpecimens(void) const{
+std::vector<Gladiator*> & Gladiators::getSpecimens(void){
     return this->specimens;
 }
 

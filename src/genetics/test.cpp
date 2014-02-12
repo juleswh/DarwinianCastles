@@ -1,11 +1,4 @@
-#include "Genom.h"
-#include "Gene.h"
-#include "Species.h"
-#include "Specimen.h"
-
-#include <iostream>
-#include <string>
-#include <cstdio>
+#include "testGladiators.h"
 
 int test_gladiators(int argc, char ** argv);
 
@@ -118,6 +111,7 @@ int test_genom(int argc, char ** argv){
 }
 
 int main(int argc, char ** argv){
+    TestGladiators test;
     cout<< "run test"<<endl;
-    return test_gladiators(argc,argv);
+    return test.test_gladiators(argc,argv);
 }
